@@ -5,10 +5,11 @@ defmodule Listener do
     import Supervisor.Spec, warn: false
 
     children = [
-      worker( Listener.Net.Tcp, [] )
+      worker( Listener.Net.Tcp, [] ),
+      worker( Queue, [[]] ),
     ]
 
-    opts = [ strategy: :one_for_one, name: Listener.Supervisor ]
+    opts = [ strategy: :one_for_one, name: Listener ]
     Supervisor.start_link( children, opts )
   end
 end

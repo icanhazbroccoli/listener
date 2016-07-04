@@ -13,7 +13,8 @@ defmodule Listener.Handler.Tcp do
   def loop( socket, transport ) do
     case transport.recv( socket, 0, 5000) do
       { :ok, data } ->
-        transport.send( socket, data )
+        :ok = Queue.Worker.push( data |> String.trim )
+        transport.send( socket, "OK\n" )
         loop( socket, transport )
       _ ->
         :ok = transport.close( socket )
